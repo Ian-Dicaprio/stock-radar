@@ -17,6 +17,9 @@ concurrency:
 jobs:
   scan-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: stock-radar
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -25,7 +28,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
       - name: 安装依赖
         run: npm install
@@ -46,7 +48,7 @@ jobs:
       - name: 上传构建产物
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: stock-radar/dist
 
       - name: 部署到 GitHub Pages
         id: deployment
