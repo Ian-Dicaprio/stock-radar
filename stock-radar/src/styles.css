@@ -55,3 +55,28 @@ button.wide { width: 100%; margin-top: 12px; }
 .hint { color: var(--sub); font-size: 12px; line-height: 1.6; margin-top: 8px; }
 .disclaimer { color: var(--sub); font-size: 11px; margin-top: 16px; text-align: center; }
 .cash-note { background: var(--card); border-radius: 8px; padding: 10px; font-size: 13px; margin-bottom: 8px; }
+
+/* 复盘页 */
+.period-picker { flex-direction: column; align-items: stretch; gap: 10px; }
+.seg { display: flex; gap: 6px; }
+.seg-btn { flex: 1; background: #0f1424; color: var(--sub); border: 1px solid var(--line); padding: 8px 0; font-size: 13px; border-radius: 8px; }
+.seg-btn.active { background: #2b60ff; color: #fff; border-color: #2b60ff; }
+.period-picker .form-row { align-items: center; margin-bottom: 0; }
+.period-picker .form-row .hint { margin-top: 0; }
+
+.row.as-btn { width: 100%; background: none; border: none; border-top: 1px solid var(--line); text-align: left; color: var(--text); padding: 8px 6px; border-radius: 0; }
+.row.as-btn:first-of-type { border-top: none; }
+.count-badge { font-weight: 700; font-size: 13px; color: var(--sub); white-space: nowrap; }
+
+.pct { font-weight: 700; }
+.pct.up { color: var(--bull); }
+.pct.down { color: var(--bear); }
+.pct.flat { color: var(--sub); }
+
+.single-stock { background: var(--card); border-radius: 12px; padding: 14px; margin-top: 12px; }
+.single-stock h3 { font-size: 15px; margin-bottom: 10px; }
+.period-card { border-top: 1px solid var(--line); padding-top: 10px; }
+.period-card .name { font-size: 14px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.period-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.period-grid .cell { background: #0f1424; border-radius: 8px; padding: 10px 6px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.period-grid .lbl { color: var(--sub); font-size: 12px; }

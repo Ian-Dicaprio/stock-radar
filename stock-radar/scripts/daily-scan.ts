@@ -7,14 +7,38 @@
  *
  * 本地手动跑:  npm run scan
  */
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { fetchAllCN, fetchUS, enrichWithIndicators } from "@/data/market";
 import { US_SYMBOLS } from "@/config/us-symbols";
 import { scoreQuote, pickTop } from "@/framework/score";
 import { DEFAULT_QUADRANT } from "@/framework/clock";
 import { LlmConfigSchema } from "@/llm/client";
 import { commentOnRankings } from "@/llm/analyst";
-import type { DailyReport, Quote, Scored } from "@/framework/types";
+import { HistoryIndexSchema, type DailyReport, type HistoryIndex, type Quote, type Scored } from "@/framework/types";
+
+/** 北京日期 YYYY-MM-DD。扫描在北京 16:30 收盘后跑,用东八区日期归档。 */
+function beijingDate(): string {
+  const bj = new Date(Date.now() + 8 * 3600 * 1000);
+  return bj.toISOString().slice(0, 10);
+}
+
+/** 把当天报告写入 history/<date>.json 并更新 index.json(去重、升序) */
+async function archiveHistory(report: DailyReport, date: string): Promise<void> {
+  await mkdir("public/data/history", { recursive: true });
+  await writeFile(`public/data/history/${date}.json`, JSON.stringify(report, null, 2), "utf-8");
+
+  let index: HistoryIndex = { dates: [], updatedAt: "" };
+  try {
+    const raw = await readFile("public/data/history/index.json", "utf-8");
+    index = HistoryIndexSchema.parse(JSON.parse(raw));
+  } catch {
+    // 首次运行无索引,用空索引起步
+  }
+  const dates = Array.from(new Set([...index.dates, date])).sort();
+  const next: HistoryIndex = { dates, updatedAt: new Date().toISOString() };
+  await writeFile("public/data/history/index.json", JSON.stringify(next, null, 2), "utf-8");
+  console.log(`[scan] 已归档历史 ${date}, 累计 ${dates.length} 个交易日`);
+}
 
 const TOP_N = 10;
 const PRESCREEN_N = 60; // 初筛保留数(按|涨跌幅|排序),再补指标,控制请求量
@@ -94,6 +118,9 @@ async function main(): Promise<void> {
   await mkdir("public/data", { recursive: true });
   await writeFile("public/data/latest.json", JSON.stringify(report, null, 2), "utf-8");
   console.log("[scan] 已写入 public/data/latest.json");
+
+  // 归档为带日期的历史快照,供「复盘」页做周期统计
+  await archiveHistory(report, beijingDate());
 }
 
 main().catch((e) => {

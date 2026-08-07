@@ -1,5 +1,5 @@
 import { StockSDK } from "stock-sdk";
-import type { Market, Quote } from "@/framework/types";
+import type { Market, PeriodReturns, Quote } from "@/framework/types";
 import { classifyTheme } from "@/framework/theme";
 
 /**
@@ -88,6 +88,58 @@ export async function enrichWithIndicators(q: Quote): Promise<Quote> {
     };
   } catch {
     return q; // 取指标失败不影响主流程
+  }
+}
+
+/** 从一根 candle 里稳健地取收盘价(字段名各源不一,逐个兜底) */
+function closeOf(c: Record<string, unknown>): number | null {
+  return (
+    num(c["close"]) ??
+    num(c["c"]) ??
+    num(c["closePrice"]) ??
+    num(c["收盘"]) ??
+    num(c["price"])
+  );
+}
+
+/**
+ * 功能一:取单只标的的多周期涨跌幅。
+ * 口径为「交易日滚动」:当日=最近1根、周=近5、月=近21、季=近63 个交易日,
+ * 用收盘价算「最新收盘 vs N 根前收盘」。数据不足的周期返回 null。
+ */
+export async function fetchPeriodReturns(symbol: string, name: string): Promise<PeriodReturns> {
+  const empty: PeriodReturns = { symbol, name, price: 0, day: null, week: null, month: null, quarter: null };
+  try {
+    const res = (await sdk.kline.withIndicators(symbol, {
+      period: "daily",
+      limit: 90,
+    })) as unknown as { candles?: Array<Record<string, unknown>> };
+    const candles = res.candles ?? [];
+    const closes = candles.map(closeOf).filter((v): v is number => v !== null);
+    const n = closes.length;
+    if (n < 2) return empty;
+
+    const last = closes[n - 1]!;
+    // 取 back 根之前的收盘价作基准,算涨跌 %;不足则返回 null
+    const ret = (back: number): number | null => {
+      const idx = n - 1 - back;
+      if (idx < 0) return null;
+      const base = closes[idx]!;
+      if (base === 0) return null;
+      return Number((((last - base) / base) * 100).toFixed(2));
+    };
+
+    return {
+      symbol,
+      name,
+      price: last,
+      day: ret(1),
+      week: ret(5),
+      month: ret(21),
+      quarter: ret(63),
+    };
+  } catch {
+    return empty;
   }
 }
 

@@ -87,3 +87,41 @@ export const DailyReportSchema = z.object({
   disclaimer: z.string(),
 });
 export type DailyReport = z.infer<typeof DailyReportSchema>;
+
+/**
+ * 历史索引 index.json:记录所有已归档日期,前端据此按周期挑选快照文件。
+ * 每个日期对应一份 history/<date>.json(结构同 DailyReport)。
+ */
+export const HistoryIndexSchema = z.object({
+  dates: z.array(z.string()), // 交易日 "YYYY-MM-DD",升序
+  updatedAt: z.string(),
+});
+export type HistoryIndex = z.infer<typeof HistoryIndexSchema>;
+
+/**
+ * 周期内某只标的的上榜统计。用于「复盘」页的出现排名。
+ * side 区分是看涨榜还是看跌榜的统计。
+ */
+export const AppearanceStatSchema = z.object({
+  symbol: z.string(),
+  name: z.string(),
+  theme: ThemeSchema.default("other"),
+  side: z.enum(["bull", "bear"]),
+  count: z.number(), // 周期内上榜次数
+  avgChangePct: z.number(), // 上榜当日涨跌幅均值 %
+  avgScore: z.number(), // 上榜时该侧评分均值
+  dates: z.array(z.string()), // 具体上榜日期
+});
+export type AppearanceStat = z.infer<typeof AppearanceStatSchema>;
+
+/** 单只标的的多周期涨跌幅(功能一)。null 表示数据不足无法计算。 */
+export const PeriodReturnsSchema = z.object({
+  symbol: z.string(),
+  name: z.string(),
+  price: z.number(),
+  day: z.number().nullable(), // 当日涨跌 %
+  week: z.number().nullable(), // 近5交易日 %
+  month: z.number().nullable(), // 近21交易日 %
+  quarter: z.number().nullable(), // 近63交易日 %
+});
+export type PeriodReturns = z.infer<typeof PeriodReturnsSchema>;
