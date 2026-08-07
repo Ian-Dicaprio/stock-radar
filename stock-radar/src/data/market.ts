@@ -17,19 +17,50 @@ function num(v: unknown): number | null {
   return typeof v === "number" && Number.isFinite(v) ? v : null;
 }
 
+/**
+ * stock-sdk v2 的 kline.withIndicators 直接返回「K线数组」,而非 { candles: [...] }。
+ * 这里做防御性归一:数组直接用;对象则从 candles/klines/data 里兜底取。
+ */
+function toBars(res: unknown): Array<Record<string, unknown>> {
+  if (Array.isArray(res)) return res as Array<Record<string, unknown>>;
+  if (res && typeof res === "object") {
+    const o = res as Record<string, unknown>;
+    for (const k of ["candles", "klines", "data", "list"]) {
+      if (Array.isArray(o[k])) return o[k] as Array<Record<string, unknown>>;
+    }
+  }
+  return [];
+}
+
+/**
+ * 从一根 bar 里取指标值。v2 把指标挂成嵌套对象(bar.ma.ma5 / bar.rsi.rsi14),
+ * 同时兼容可能的扁平写法(bar.ma5)。逐个兜底,取不到返回 null。
+ */
+function indicator(bar: Record<string, unknown>, group: string, key: string): number | null {
+  const g = bar[group];
+  if (g && typeof g === "object") {
+    const v = num((g as Record<string, unknown>)[key]);
+    if (v !== null) return v;
+  }
+  return num(bar[key]);
+}
+
 /** 把 sdk 的一条行情 + 指标映射成 Quote */
 function toQuote(
   raw: Record<string, unknown>,
   market: Market,
   extra: { ma5?: number | null; ma20?: number | null; ma60?: number | null; volumeMa5?: number | null; rsi14?: number | null } = {},
 ): Quote {
-  const name = String(raw["name"] ?? raw["symbol"] ?? "");
+  const name = String(raw["name"] ?? raw["symbol"] ?? raw["code"] ?? "");
+  // stock-sdk v2 统一字段:归一化代码 symbol、裸代码 code、涨跌幅 changePercent。
+  // 逐个兜底,兼容不同 provider/版本的命名,避免取到空值导致下游合并/查询失败。
+  const symbol = String(raw["symbol"] ?? raw["code"] ?? "");
   return {
-    symbol: String(raw["symbol"] ?? ""),
+    symbol,
     name,
     market,
     price: num(raw["price"]) ?? 0,
-    changePct: num(raw["changePct"]) ?? 0,
+    changePct: num(raw["changePercent"]) ?? num(raw["changePct"]) ?? 0,
     volume: num(raw["volume"]) ?? 0,
     turnoverRate: num(raw["turnoverRate"]),
     ma5: extra.ma5 ?? null,
@@ -66,24 +97,24 @@ export async function fetchUS(symbols: readonly string[]): Promise<Quote[]> {
 export async function enrichWithIndicators(q: Quote): Promise<Quote> {
   try {
     const fn = q.market === "CN" ? sdk.kline.cn : sdk.kline.us;
-    const withInd = (await sdk.kline.withIndicators(q.symbol, {
+    const withInd = await sdk.kline.withIndicators(q.symbol, {
       period: "daily",
       limit: 70,
       ma: [5, 20, 60],
       rsi: [14],
-    })) as unknown as { candles?: Array<Record<string, unknown>> };
+    });
     void fn; // 保留引用,便于按需切换
-    const candles = withInd.candles ?? [];
+    const candles = toBars(withInd);
     const last = candles[candles.length - 1];
     if (!last) return q;
     const vols = candles.slice(-5).map((c) => num(c["volume"]) ?? 0);
     const volumeMa5 = vols.length ? vols.reduce((a, b) => a + b, 0) / vols.length : null;
     return {
       ...q,
-      ma5: num(last["ma5"]),
-      ma20: num(last["ma20"]),
-      ma60: num(last["ma60"]),
-      rsi14: num(last["rsi14"]),
+      ma5: indicator(last, "ma", "ma5"),
+      ma20: indicator(last, "ma", "ma20"),
+      ma60: indicator(last, "ma", "ma60"),
+      rsi14: indicator(last, "rsi", "rsi14"),
       volumeMa5,
     };
   } catch {
@@ -110,11 +141,11 @@ function closeOf(c: Record<string, unknown>): number | null {
 export async function fetchPeriodReturns(symbol: string, name: string): Promise<PeriodReturns> {
   const empty: PeriodReturns = { symbol, name, price: 0, day: null, week: null, month: null, quarter: null };
   try {
-    const res = (await sdk.kline.withIndicators(symbol, {
+    const res = await sdk.kline.withIndicators(symbol, {
       period: "daily",
       limit: 90,
-    })) as unknown as { candles?: Array<Record<string, unknown>> };
-    const candles = res.candles ?? [];
+    });
+    const candles = toBars(res);
     const closes = candles.map(closeOf).filter((v): v is number => v !== null);
     const n = closes.length;
     if (n < 2) return empty;
