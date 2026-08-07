@@ -39,6 +39,17 @@ jobs:
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
         run: npm run scan
 
+      - name: 提交历史数据回仓库
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          if git diff --staged --quiet; then
+            echo "无数据变更,跳过提交"
+          else
+            git commit -m "chore(data): 每日榜单归档 $(TZ=Asia/Shanghai date +%F)"
+            git push
+          fi
       - name: 构建前端
         run: npm run build
 
