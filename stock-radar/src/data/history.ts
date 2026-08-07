@@ -56,6 +56,9 @@ export interface RankingResult {
   bull: AppearanceStat[];
   bear: AppearanceStat[];
 }
+
+/** 排名最多显示多少只(每侧)。周期内不同标的可能很多,只取最靠前的。 */
+const RANK_LIMIT = 10;
 /** 单侧累加器 */
 interface Acc {
   symbol: string;
@@ -128,7 +131,8 @@ export async function aggregateRankings(
         avgScore: Number((a.sumScore / a.count).toFixed(2)),
         dates: a.dates,
       }))
-      .sort((x, y) => y.count - x.count || y.avgScore - x.avgScore);
+      .sort((x, y) => y.count - x.count || y.avgScore - x.avgScore)
+      .slice(0, RANK_LIMIT);
 
   return {
     dates,
