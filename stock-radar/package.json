@@ -6,7 +6,7 @@
   "description": "全市场每日多空雷达：周期+美林时钟框架打分，Top10 看涨/看跌，搜索与持仓分析",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "scan": "tsx scripts/daily-scan.ts"
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@total-typescript/tsconfig": "^1.0.4",
+    "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
