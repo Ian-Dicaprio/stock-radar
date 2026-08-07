@@ -89,9 +89,11 @@ export async function aggregateRankings(
     side: "bull" | "bear",
   ): void => {
     for (const s of list) {
-      const key = s.quote.symbol;
+      // 优先用归一化代码做 key;历史快照里 symbol 可能为空(旧数据源字段缺失),
+      // 退回用股票名,避免不同标的因空 symbol 被错误合并成一行。
+      const key = s.quote.symbol || s.quote.name;
       const prev = map.get(key) ?? {
-        symbol: key,
+        symbol: s.quote.symbol,
         name: s.quote.name,
         theme: s.quote.theme,
         count: 0,
@@ -134,4 +136,3 @@ export async function aggregateRankings(
     bear: finalize(bearMap, "bear"),
   };
 }
-
