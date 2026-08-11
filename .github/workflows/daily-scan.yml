@@ -3,7 +3,40 @@ name: 每日扫描并部署
 on:
   schedule:
     - cron: "30 8 * * 1-5"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      cnPmi:
+        description: "A股 制造业PMI(荣枯线50,来源:统计局)。留空=沿用上次"
+        required: false
+        type: string
+      cnPpi:
+        description: "A股 PPI同比%(看正负定通胀,来源:统计局)。留空=沿用上次"
+        required: false
+        type: string
+      cnCpi:
+        description: "A股 CPI同比%(仅供点评参考,可留空)"
+        required: false
+        type: string
+      cnNote:
+        description: "A股 数据月份备注,如 2026-07(可留空)"
+        required: false
+        type: string
+      usPmi:
+        description: "美股 ISM制造业PMI(荣枯线50,来源:ismworld.org)。留空=沿用上次"
+        required: false
+        type: string
+      usPpi:
+        description: "美股 PPI同比%(来源:bls.gov)。留空=沿用上次"
+        required: false
+        type: string
+      usCpi:
+        description: "美股 CPI同比%(仅供点评参考,可留空)"
+        required: false
+        type: string
+      usNote:
+        description: "美股 数据月份备注,如 2026-07(可留空)"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -32,6 +65,19 @@ jobs:
       - name: 安装依赖
         run: npm install
 
+      - name: 更新宏观数据(仅手动触发填了表单时生效)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          CN_PMI: ${{ inputs.cnPmi }}
+          CN_PPI: ${{ inputs.cnPpi }}
+          CN_CPI: ${{ inputs.cnCpi }}
+          CN_NOTE: ${{ inputs.cnNote }}
+          US_PMI: ${{ inputs.usPmi }}
+          US_PPI: ${{ inputs.usPpi }}
+          US_CPI: ${{ inputs.usCpi }}
+          US_NOTE: ${{ inputs.usNote }}
+        run: npx tsx scripts/set-macro.ts
+
       - name: 运行每日扫描
         env:
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
@@ -50,6 +96,7 @@ jobs:
             git commit -m "chore(data): 每日榜单归档 $(TZ=Asia/Shanghai date +%F)"
             git push
           fi
+
       - name: 构建前端
         run: npm run build
 
