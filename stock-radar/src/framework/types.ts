@@ -145,3 +145,27 @@ export const PeriodReturnsSchema = z.object({
   quarter: z.number().nullable(), // 近63交易日 %
 });
 export type PeriodReturns = z.infer<typeof PeriodReturnsSchema>;
+
+/**
+ * 单只标的的收盘价滚动缓存条目。
+ * closes 保留最近约65个交易日收盘价(升序,末尾最新),volumes 保留最近约6个。
+ * lastDate 记最后一次追加的交易日,防同日重复追加;seededAt 记最后一次拉K线补种/自愈的日期。
+ */
+export const CacheEntrySchema = z.object({
+  closes: z.array(z.number()).default([]),
+  volumes: z.array(z.number()).default([]),
+  lastDate: z.string().default(""),
+  seededAt: z.string().default(""),
+});
+export type CacheEntry = z.infer<typeof CacheEntrySchema>;
+
+/**
+ * 收盘价滚动缓存文件 public/data/kline-cache.json 的结构。
+ * 目前只缓存 A 股(美股仅35只,逐只拉K线本就便宜,不入缓存)。
+ * 每天扫描时追加当日收盘价,自己算均线,绕开对全市场逐只拉K线。
+ */
+export const KlineCacheSchema = z.object({
+  cn: z.record(z.string(), CacheEntrySchema).default({}),
+  updatedAt: z.string().default(""),
+});
+export type KlineCache = z.infer<typeof KlineCacheSchema>;
