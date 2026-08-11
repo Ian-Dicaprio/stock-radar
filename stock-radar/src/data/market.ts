@@ -134,6 +134,31 @@ function closeOf(c: Record<string, unknown>): number | null {
 }
 
 /**
+ * 补种/自愈用:拉单只标的的历史收盘价+成交量(升序,末尾最新)。
+ * 供每日扫描给收盘价滚动缓存做首次补种或除权自愈。失败返回空数组。
+ * 只取最近 keep 根写入缓存(默认65,足够算 MA60)。
+ */
+export async function fetchClosesHistory(
+  symbol: string,
+  keep = 65,
+): Promise<{ closes: number[]; volumes: number[] }> {
+  try {
+    const res = await sdk.kline.withIndicators(symbol, { period: "daily", limit: 70 });
+    const candles = toBars(res);
+    const rows = candles
+      .map((c) => ({ close: closeOf(c), volume: num(c["volume"]) ?? 0 }))
+      .filter((r): r is { close: number; volume: number } => r.close !== null);
+    const tail = rows.slice(-keep);
+    return {
+      closes: tail.map((r) => Number(r.close.toFixed(2))),
+      volumes: tail.map((r) => Math.round(r.volume)),
+    };
+  } catch {
+    return { closes: [], volumes: [] };
+  }
+}
+
+/**
  * 功能一:取单只标的的多周期涨跌幅。
  * 口径为「交易日滚动」:当日=最近1根、周=近5、月=近21、季=近63 个交易日,
  * 用收盘价算「最新收盘 vs N 根前收盘」。数据不足的周期返回 null。
