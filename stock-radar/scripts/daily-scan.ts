@@ -11,10 +11,20 @@ import { writeFile, mkdir, readFile } from "node:fs/promises";
 import { fetchAllCN, fetchUS, enrichWithIndicators } from "@/data/market";
 import { US_SYMBOLS } from "@/config/us-symbols";
 import { scoreQuote, pickTop } from "@/framework/score";
-import { DEFAULT_QUADRANT } from "@/framework/clock";
+import { DEFAULT_QUADRANT, quadrantFromMacro } from "@/framework/clock";
 import { LlmConfigSchema } from "@/llm/client";
 import { commentOnRankings } from "@/llm/analyst";
-import { HistoryIndexSchema, type DailyReport, type HistoryIndex, type Quote, type Scored } from "@/framework/types";
+import { HistoryIndexSchema, MacroSchema, type DailyReport, type HistoryIndex, type Macro, type Quote, type Scored } from "@/framework/types";
+
+/** 读宏观数据文件 macro.json;读不到则返回空(判定时回退默认象限)。 */
+async function loadMacro(): Promise<Macro> {
+  try {
+    const raw = await readFile("public/data/macro.json", "utf-8");
+    return MacroSchema.parse(JSON.parse(raw));
+  } catch {
+    return MacroSchema.parse({ cn: {}, us: {} });
+  }
+}
 
 /** 北京日期 YYYY-MM-DD。扫描在北京 16:30 收盘后跑,用东八区日期归档。 */
 function beijingDate(): string {
@@ -77,8 +87,14 @@ async function main(): Promise<void> {
   ]);
   console.log(`[scan] A股 ${cn.length} 只, 美股 ${us.length} 只`);
 
-  const scoredCN = await scoreMarket(cn, DEFAULT_QUADRANT.CN);
-  const scoredUS = await scoreMarket(us, DEFAULT_QUADRANT.US);
+  // 读宏观数据,按 PMI×PPI 规则算出当前象限(缺数据则回退默认象限)
+  const macro = await loadMacro();
+  const cnQ = quadrantFromMacro(macro.cn.pmi, macro.cn.ppi, DEFAULT_QUADRANT.CN);
+  const usQ = quadrantFromMacro(macro.us.pmi, macro.us.ppi, DEFAULT_QUADRANT.US);
+  console.log(`[scan] 象限判定 A股=${cnQ.quadrant}(${cnQ.note}) 美股=${usQ.quadrant}(${usQ.note})`);
+
+  const scoredCN = await scoreMarket(cn, cnQ.quadrant);
+  const scoredUS = await scoreMarket(us, usQ.quadrant);
   const all = [...scoredCN, ...scoredUS];
 
   const { bull, bear } = pickTop(all, TOP_N);
@@ -93,7 +109,7 @@ async function main(): Promise<void> {
   const parsed = LlmConfigSchema.safeParse(llmEnv);
   if (parsed.success) {
     try {
-      commentary = await commentOnRankings(parsed.data, { cn: DEFAULT_QUADRANT.CN, us: DEFAULT_QUADRANT.US }, bull, bear);
+      commentary = await commentOnRankings(parsed.data, { cn: cnQ.quadrant, us: usQ.quadrant }, bull, bear);
       console.log("[scan] 大模型点评完成");
     } catch (e) {
       console.error("大模型点评失败(不影响榜单):", e);
@@ -105,9 +121,9 @@ async function main(): Promise<void> {
   const report: DailyReport = {
     generatedAt: new Date().toISOString(),
     quadrant: {
-      cn: DEFAULT_QUADRANT.CN,
-      us: DEFAULT_QUADRANT.US,
-      note: "象限为框架默认值,复盘时在 src/framework/clock.ts 调整",
+      cn: cnQ.quadrant,
+      us: usQ.quadrant,
+      note: `A股: ${cnQ.note}；美股: ${usQ.note}`,
     },
     topBull: bull,
     topBear: bear,
