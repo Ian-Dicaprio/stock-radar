@@ -1,17 +1,43 @@
 import type { Market, Quadrant, Theme } from "./types";
 
 /**
- * 当前美林时钟象限。这是一个"人工/大模型判断"的输入项,
- * 因为宏观象限无法从个股行情自动算出,需结合政策与数据。
- * 部署后可在 config/quadrant.json 覆盖,或让每日扫描脚本调大模型判定。
- *
- * 默认值来自 2026-08 初的判断:美股偏滞胀、A股衰退末期转复苏。
- * 复盘时更新此处即可让全盘打分随象限切换。
+ * 当前美林时钟象限的默认值(回退用)。
+ * 正常情况下由 public/data/macro.json 的 PMI/PPI 自动算出;
+ * 只有当宏观数据缺失时,才回退到这里的默认值。
  */
 export const DEFAULT_QUADRANT: Record<Market, Quadrant> = {
   US: "stagflation",
   CN: "recovery",
 };
+
+/**
+ * 由宏观指标机械地推出象限。两轴各有天然分界线,填绝对值即可,无需判断趋势:
+ *   增长方向:PMI ≥ 50 = 扩张,< 50 = 收缩
+ *   通胀方向:PPI 同比 > 0 = 抬头,≤ 0 = 回落
+ * pmi/ppi 任一缺失(null)则回退到 fallback(默认象限)。
+ * 返回象限 + 一句人类可读的判定依据,写进报告 note。
+ */
+export function quadrantFromMacro(
+  pmi: number | null,
+  ppi: number | null,
+  fallback: Quadrant,
+): { quadrant: Quadrant; note: string } {
+  if (pmi === null || ppi === null) {
+    return { quadrant: fallback, note: "宏观数据未填(PMI/PPI 缺失),沿用默认象限" };
+  }
+  const growthUp = pmi >= 50;
+  const inflationUp = ppi > 0;
+  const quadrant: Quadrant = growthUp
+    ? inflationUp
+      ? "overheat" // 增长↑ 通胀↑
+      : "recovery" // 增长↑ 通胀↓
+    : inflationUp
+      ? "stagflation" // 增长↓ 通胀↑
+      : "recession"; // 增长↓ 通胀↓
+  const gTxt = `PMI ${pmi}${growthUp ? "≥50 增长扩张" : "<50 增长收缩"}`;
+  const iTxt = `PPI ${ppi}${inflationUp ? ">0 通胀抬头" : "≤0 通胀回落"}`;
+  return { quadrant, note: `${gTxt}、${iTxt} → ${quadrantLabel(quadrant)}` };
+}
 
 /**
  * 象限 × 赛道 的契合加分表。
