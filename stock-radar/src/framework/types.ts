@@ -114,6 +114,26 @@ export const AppearanceStatSchema = z.object({
 });
 export type AppearanceStat = z.infer<typeof AppearanceStatSchema>;
 
+/**
+ * 单个市场的宏观输入。PMI 定增长方向(≥50 扩张),PPI 同比定通胀方向(>0 抬头)。
+ * cpi/note 仅供大模型点评参考,不参与象限判定。null 表示未填,判定时回退默认象限。
+ */
+export const MacroMarketSchema = z.object({
+  pmi: z.number().nullable().default(null), // 采购经理指数,荣枯线 50
+  ppi: z.number().nullable().default(null), // 工业品出厂价格同比 %,通胀方向看正负
+  cpi: z.number().nullable().default(null), // 居民消费价格同比 %,仅参考
+  note: z.string().default(""), // 备注/数据月份,如 "2026-07"
+});
+export type MacroMarket = z.infer<typeof MacroMarketSchema>;
+
+/** 宏观数据文件 public/data/macro.json 的结构。cn/us 各一组。 */
+export const MacroSchema = z.object({
+  cn: MacroMarketSchema,
+  us: MacroMarketSchema,
+  updatedAt: z.string().default(""),
+});
+export type Macro = z.infer<typeof MacroSchema>;
+
 /** 单只标的的多周期涨跌幅(功能一)。null 表示数据不足无法计算。 */
 export const PeriodReturnsSchema = z.object({
   symbol: z.string(),
