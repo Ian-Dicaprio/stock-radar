@@ -1,0 +1,654 @@
+{
+  "generatedAt": "2026-11-05T16:39:41.158Z",
+  "quadrant": {
+    "cn": "stagflation",
+    "us": "overheat",
+    "note": "A股: PMI 49.2<50 增长收缩、PPI 3.5>0 通胀抬头 → 滞胀（超配现金）；美股: PMI 55.6≥50 增长扩张、PPI 5.5>0 通胀抬头 → 过热（超配商品）"
+  },
+  "topBull": [
+    {
+      "quote": {
+        "symbol": "603517",
+        "name": "绝味食品",
+        "market": "CN",
+        "price": 11.7,
+        "changePct": 2.18,
+        "volume": 300904,
+        "turnoverRate": 4.97,
+        "ma5": 11.116,
+        "ma20": 10.841,
+        "ma60": 11.263,
+        "volumeMa5": 179468,
+        "rsi14": 61.89,
+        "northboundInflow": null,
+        "theme": "grain"
+      },
+      "bullScore": 35.33,
+      "bearScore": -35.33,
+      "breakdown": {
+        "momentum": 21.18,
+        "volume": 10.149664564156284,
+        "theme": 12,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注",
+        "命中当前象限看好的主线赛道"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "603170",
+        "name": "宝立食品",
+        "market": "CN",
+        "price": 13.62,
+        "changePct": 5.66,
+        "volume": 89844,
+        "turnoverRate": 2.25,
+        "ma5": 12.972,
+        "ma20": 12.857,
+        "ma60": 12.604,
+        "volumeMa5": 64689,
+        "rsi14": 62.47,
+        "northboundInflow": null,
+        "theme": "grain"
+      },
+      "bullScore": 34.49,
+      "bearScore": -34.49,
+      "breakdown": {
+        "momentum": 24.66,
+        "volume": 5.8329082224180295,
+        "theme": 12,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "命中当前象限看好的主线赛道"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "603707",
+        "name": "健友股份",
+        "market": "CN",
+        "price": 8.71,
+        "changePct": 7.53,
+        "volume": 346830,
+        "turnoverRate": 2.15,
+        "ma5": 8.252,
+        "ma20": 8.13,
+        "ma60": 7.987,
+        "volumeMa5": 160278,
+        "rsi14": 65.56,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 32,
+      "bearScore": -32,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "688622",
+        "name": "*ST禾信",
+        "market": "CN",
+        "price": 120,
+        "changePct": 13.92,
+        "volume": 946665,
+        "turnoverRate": 1.34,
+        "ma5": 106.982,
+        "ma20": 106.356,
+        "ma60": 108.793,
+        "volumeMa5": 438704,
+        "rsi14": 63.61,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 32,
+      "bearScore": -32,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "001393",
+        "name": "维通利",
+        "market": "CN",
+        "price": 40.91,
+        "changePct": 10,
+        "volume": 68072,
+        "turnoverRate": 14.17,
+        "ma5": 37.14,
+        "ma20": 37.087,
+        "ma60": 40.699,
+        "volumeMa5": 29996,
+        "rsi14": 69.72,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 32,
+      "bearScore": -32,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "002444",
+        "name": "巨星科技",
+        "market": "CN",
+        "price": 29.92,
+        "changePct": 7.16,
+        "volume": 380607,
+        "turnoverRate": 3.32,
+        "ma5": 27.438,
+        "ma20": 26.314,
+        "ma60": 28.029,
+        "volumeMa5": 175919,
+        "rsi14": 67.13,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 32,
+      "bearScore": -32,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "300709",
+        "name": "精研科技",
+        "market": "CN",
+        "price": 41.38,
+        "changePct": 20.01,
+        "volume": 279541,
+        "turnoverRate": 18.65,
+        "ma5": 35.04,
+        "ma20": 34.349,
+        "ma60": 38.044,
+        "volumeMa5": 138657,
+        "rsi14": 68.65,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 32,
+      "bearScore": -32,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "920086",
+        "name": "科马材料",
+        "market": "CN",
+        "price": 20.3,
+        "changePct": 6.79,
+        "volume": 21605,
+        "turnoverRate": 7.89,
+        "ma5": 19.53,
+        "ma20": 19.287,
+        "ma60": 20.126,
+        "volumeMa5": 11086,
+        "rsi14": 60.27,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 31.23,
+      "bearScore": -31.23,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 14.232816164531844,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "300877",
+        "name": "金春股份",
+        "market": "CN",
+        "price": 29.53,
+        "changePct": 8.77,
+        "volume": 56472,
+        "turnoverRate": 4.71,
+        "ma5": 26.974,
+        "ma20": 26.53,
+        "ma60": 26.762,
+        "volumeMa5": 29816,
+        "rsi14": 67.29,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 30.41,
+      "bearScore": -30.41,
+      "breakdown": {
+        "momentum": 25,
+        "volume": 13.410249530453449,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "601921",
+        "name": "浙版传媒",
+        "market": "CN",
+        "price": 8.17,
+        "changePct": 3.81,
+        "volume": 432984,
+        "turnoverRate": 1.95,
+        "ma5": 7.84,
+        "ma20": 7.801,
+        "ma60": 7.596,
+        "volumeMa5": 213839,
+        "rsi14": 57.36,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": 29.81,
+      "bearScore": -29.81,
+      "breakdown": {
+        "momentum": 22.81,
+        "volume": 15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "多头排列，站上关键均线",
+        "明显放量，资金关注"
+      ]
+    }
+  ],
+  "topBear": [
+    {
+      "quote": {
+        "symbol": "000831",
+        "name": "中国稀土",
+        "market": "CN",
+        "price": 47.59,
+        "changePct": 0,
+        "volume": 0,
+        "turnoverRate": 0,
+        "ma5": 47.59,
+        "ma20": 48.377,
+        "ma60": 53.528,
+        "volumeMa5": 38723,
+        "rsi14": 52.61,
+        "northboundInflow": null,
+        "theme": "other"
+      },
+      "bullScore": -42,
+      "bearScore": 42,
+      "breakdown": {
+        "momentum": -19,
+        "volume": -15,
+        "theme": 0,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "003017",
+        "name": "大洋生物",
+        "market": "CN",
+        "price": 21.51,
+        "changePct": -0.92,
+        "volume": 54845,
+        "turnoverRate": 6.57,
+        "ma5": 21.8,
+        "ma20": 22.166,
+        "ma60": 22.24,
+        "volumeMa5": 91204,
+        "rsi14": 44.25,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -41.9,
+      "bearScore": 41.9,
+      "breakdown": {
+        "momentum": -19.92,
+        "volume": -5.979836410683743,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "301087",
+        "name": "可孚医疗",
+        "market": "CN",
+        "price": 51.38,
+        "changePct": 0.43,
+        "volume": 18452,
+        "turnoverRate": 0.95,
+        "ma5": 50.398,
+        "ma20": 52.972,
+        "ma60": 51.457,
+        "volumeMa5": 27480,
+        "rsi14": 52.73,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -39.5,
+      "bearScore": 39.5,
+      "breakdown": {
+        "momentum": -18.57,
+        "volume": -4.927947598253275,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "920166",
+        "name": "海圣医疗",
+        "market": "CN",
+        "price": 18.28,
+        "changePct": 0.94,
+        "volume": 4017,
+        "turnoverRate": 1.69,
+        "ma5": 18.166,
+        "ma20": 18.468,
+        "ma60": 19.829,
+        "volumeMa5": 5721,
+        "rsi14": 50.91,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -38.53,
+      "bearScore": 38.53,
+      "breakdown": {
+        "momentum": -18.06,
+        "volume": -4.467750393287886,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "002022",
+        "name": "科华生物",
+        "market": "CN",
+        "price": 5.21,
+        "changePct": 1.36,
+        "volume": 63326,
+        "turnoverRate": 1.23,
+        "ma5": 5.14,
+        "ma20": 5.446,
+        "ma60": 5.53,
+        "volumeMa5": 87209,
+        "rsi14": 30.61,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -37.75,
+      "bearScore": 37.75,
+      "breakdown": {
+        "momentum": -17.64,
+        "volume": -4.107890240686168,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "002007",
+        "name": "华兰生物",
+        "market": "CN",
+        "price": 12.46,
+        "changePct": -0.95,
+        "volume": 112386,
+        "turnoverRate": 0.71,
+        "ma5": 12.336,
+        "ma20": 12.767,
+        "ma60": 13.02,
+        "volumeMa5": 127516,
+        "rsi14": 41.44,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -37.73,
+      "bearScore": 37.73,
+      "breakdown": {
+        "momentum": -19.95,
+        "volume": -1.7797766554785284,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "600216",
+        "name": "浙江医药",
+        "market": "CN",
+        "price": 11.28,
+        "changePct": 0.98,
+        "volume": 122610,
+        "turnoverRate": 1.29,
+        "ma5": 10.954,
+        "ma20": 11.707,
+        "ma60": 12.444,
+        "volumeMa5": 160783,
+        "rsi14": 35.21,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -37.58,
+      "bearScore": 37.58,
+      "breakdown": {
+        "momentum": -18.02,
+        "volume": -3.561290683716561,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "920504",
+        "name": "博迅生物",
+        "market": "CN",
+        "price": 16.7,
+        "changePct": 2.02,
+        "volume": 2099,
+        "turnoverRate": 1.27,
+        "ma5": 16.244,
+        "ma20": 16.992,
+        "ma60": 17.774,
+        "volumeMa5": 2947,
+        "rsi14": 46.83,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -37.3,
+      "bearScore": 37.3,
+      "breakdown": {
+        "momentum": -16.98,
+        "volume": -4.316253817441465,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "600873",
+        "name": "梅花生物",
+        "market": "CN",
+        "price": 7.31,
+        "changePct": 2.09,
+        "volume": 262995,
+        "turnoverRate": 0.94,
+        "ma5": 7.164,
+        "ma20": 7.344,
+        "ma60": 7.507,
+        "volumeMa5": 364162,
+        "rsi14": 47.18,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -37.08,
+      "bearScore": 37.08,
+      "breakdown": {
+        "momentum": -16.91,
+        "volume": -4.167115185000082,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 0
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    },
+    {
+      "quote": {
+        "symbol": "000597",
+        "name": "东北制药",
+        "market": "CN",
+        "price": 4.49,
+        "changePct": 0.22,
+        "volume": 81077,
+        "turnoverRate": 0.58,
+        "ma5": 4.416,
+        "ma20": 4.583,
+        "ma60": 4.772,
+        "volumeMa5": 94341,
+        "rsi14": 28.79,
+        "northboundInflow": null,
+        "theme": "biotech"
+      },
+      "bullScore": -35.68,
+      "bearScore": 36.89,
+      "breakdown": {
+        "momentum": -18.78,
+        "volume": -2.108945209399942,
+        "theme": -8,
+        "quadrant": -8,
+        "flow": 0,
+        "overbought": 1.2100000000000009
+      },
+      "reasons": [
+        "跌破均线，趋势走弱",
+        "所处赛道在当前象限逆风"
+      ]
+    }
+  ],
+  "commentary": "",
+  "disclaimer": "本榜单为量化打分的线索性输出,不构成投资建议,实盘决策与盈亏自负。"
+}
